@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-white font-inter;
+}
+:root {
+  --color-primary: #0f172a;
+  --color-secondary: #94a3b8;
+  --color-accent: #6366f1;
+  --color-muted: #94a3b8;
+  --color-back: #f1f5f9;
+  --color-white: #ffffff;
+  --color-slate500: #334155;
+}
