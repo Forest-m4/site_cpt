@@ -1,3 +1,4 @@
+// src/pages/Posts.tsx
 import React from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../../Feature/Header";
@@ -8,11 +9,12 @@ const Posts: React.FC = () => {
   const userEmail = location.state?.email || "user@example.com";
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC]">
-      <Header email={userEmail} />
-
+    <div className="min-h-screen bg-[#F8FAFC] relative">
       <Sidebar />
-      <main className="ml-48 mt-10 p-4">___</main>
+      <Header email={userEmail} />
+      <main className="ml-[235px] mt-[34px] p-4">
+        <div className="text-lg font-medium">___</div>
+      </main>
     </div>
   );
 };
