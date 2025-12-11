@@ -1,18 +1,8 @@
-import React, { ButtonHTMLAttributes } from "react";
+import React from "react";
+import UIButton, { type UIButtonProps } from "../../ui/UiButton";
 
-interface DarkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
-}
-
-const DarkButton: React.FC<DarkButtonProps> = ({ children, ...props }) => {
-  return (
-    <button
-      {...props}
-      className="w-[384px] h-[40px] bg-[var(--color-primary)] text-[var(--color-back)] rounded-md hover:bg-[#2a2d46] active:bg-[#1f2235] transition-colors"
-    >
-      {children}
-    </button>
-  );
+const DarkButton: React.FC<UIButtonProps> = ({ className, ...props }) => {
+  return <UIButton {...props} color="dark" className={className} />;
 };
 
 export default DarkButton;
