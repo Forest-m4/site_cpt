@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputField from "../../components/layout/InputField";
 import DarkButton from "../../components/layout/DarkButton";
 import Typography from "../../components/ui/Typography";
@@ -7,15 +7,17 @@ import Typography from "../../components/ui/Typography";
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ email, password });
+    if (!email || !password) return alert("Введите email и пароль");
+
+    navigate("/posts", { state: { email } });
   };
 
   return (
     <div className="w-[416px] h-[320px] mx-auto mt-20 p-4 flex flex-col">
-      {/* Заголовок */}
       <Typography variant="h4" color="primary">
         Войти
       </Typography>
@@ -27,7 +29,6 @@ const Login: React.FC = () => {
           value={email}
           onChange={setEmail}
         />
-
         <InputField
           label="Пароль"
           type="password"
