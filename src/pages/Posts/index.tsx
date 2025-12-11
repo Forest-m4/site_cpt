@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../../Feature/Header";
+import Sidebar from "../../Feature/Sidebar";
 
 const Posts: React.FC = () => {
   const location = useLocation();
@@ -10,7 +11,8 @@ const Posts: React.FC = () => {
     <div className="min-h-screen bg-[#F8FAFC]">
       <Header email={userEmail} />
 
-      <main className="p-4">___</main>
+      <Sidebar />
+      <main className="ml-48 mt-10 p-4">___</main>
     </div>
   );
 };
