@@ -3,7 +3,7 @@ import Typography from "../../ui/Typography";
 
 interface SidebarItemProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  icon: React.ComponentType<any>; // компонент иконки
+  icon: React.ComponentType<any>;
   label: string;
   onClick?: () => void;
   active?: boolean;
