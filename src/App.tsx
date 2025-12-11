@@ -1,17 +1,20 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Register from "./pages/Register";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Posts from "./pages/Posts";
 
 const App: React.FC = () => {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
-        <Route path="*" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/posts" element={<Posts />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 };
 
