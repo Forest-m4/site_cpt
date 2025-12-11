@@ -9,7 +9,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ email, avatarUrl }) => {
   return (
-    <header className="w-full flex items-center justify-between px-20 py-4 bg-back shadow-md">
+    <header className="w-full flex items-center justify-between px-20 py-4">
       <HeaderLogo />
 
       <HeaderUser email={email} avatarUrl={avatarUrl} />
