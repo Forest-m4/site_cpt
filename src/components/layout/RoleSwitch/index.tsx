@@ -8,8 +8,7 @@ interface RoleSwitchProps {
 
 const RoleSwitch: React.FC<RoleSwitchProps> = ({ value, onChange }) => {
   return (
-    <div className="w-[166px] h-[42px] flex border  rounded-md overflow-hidden bg-back">
-      {/* Читатель */}
+    <div className="w-[166px] h-[42px] flex border rounded-md overflow-hidden bg-back">
       <button
         type="button"
         onClick={() => onChange("reader")}
@@ -19,7 +18,7 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({ value, onChange }) => {
           className={`absolute inset-1 rounded-md transition-colors duration-200 ${
             value === "reader" ? "bg-white" : "bg-back"
           }`}
-        ></div>
+        />
         <Typography
           variant="subtitle-medium"
           color={value === "reader" ? "primary" : "slate500"}
@@ -29,7 +28,6 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({ value, onChange }) => {
         </Typography>
       </button>
 
-      {/* Автор */}
       <button
         type="button"
         onClick={() => onChange("author")}
@@ -39,7 +37,7 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({ value, onChange }) => {
           className={`absolute inset-1 rounded-md transition-colors duration-200 ${
             value === "author" ? "bg-white" : "bg-back"
           }`}
-        ></div>
+        />
         <Typography
           variant="subtitle-medium"
           color={value === "author" ? "primary" : "slate500"}

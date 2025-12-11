@@ -13,7 +13,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     if (!email || !password) return alert("Введите email и пароль");
 
-    navigate("/posts", { state: { email } });
+    navigate("/posts", { state: { email, role: "reader" } });
   };
 
   return (

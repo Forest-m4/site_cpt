@@ -16,7 +16,7 @@ const Register: React.FC = () => {
     e.preventDefault();
     if (password !== repeatPassword) return alert("Пароли не совпадают");
 
-    navigate("/posts", { state: { email } });
+    navigate("/posts", { state: { email, role } });
   };
 
   return (
