@@ -1,11 +1,21 @@
 import React from "react";
-import { useNavigate, Outlet, useMatch } from "react-router-dom";
+import { useLocation, useNavigate, Outlet, useMatch } from "react-router-dom";
 
 import Sidebar from "../../Feature/Sidebar";
 import Header from "../../Feature/Header";
 
+interface LocationState {
+  email: string;
+  role: "reader" | "author";
+}
+
 const Posts: React.FC = () => {
+  const location = useLocation();
   const navigate = useNavigate();
+  const state = location.state as LocationState | null;
+
+  const storedEmail = localStorage.getItem("userEmail");
+  const userEmail = state?.email || storedEmail || "user@example.com";
 
   const matchAll = useMatch("/posts/all");
   const matchMy = useMatch("/posts/my");
@@ -20,7 +30,7 @@ const Posts: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#F8FAFC] relative">
       <Sidebar />
-      <Header email="user@example.com" />
+      <Header email={userEmail} />
 
       <main className="ml-[265px] mt-[40px] p-4 flex flex-col gap-4">
         {/* Панель вкладок */}
