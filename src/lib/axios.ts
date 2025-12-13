@@ -1,10 +1,7 @@
 import axios from "axios";
 
-// Для TypeScript нужно добавить типы для import.meta.env
 const api = axios.create({
-  baseURL: "http://localhost:3000/api", // ← укажите явно URL пока
-  // или
-  // baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/api' : '/api',
+  baseURL: "http://localhost:3000/api",
 });
 
 api.interceptors.request.use((config) => {

@@ -18,6 +18,8 @@ const Register: React.FC = () => {
       alert("Пароли не совпадают");
       return;
     }
+    localStorage.setItem("userEmail", email);
+    localStorage.setItem("userRole", role);
 
     navigate("/posts", { state: { email, role } });
   };

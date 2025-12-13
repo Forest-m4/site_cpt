@@ -15,6 +15,8 @@ const Login: React.FC = () => {
       alert("Введите email и пароль");
       return;
     }
+    localStorage.setItem("userEmail", email);
+    localStorage.setItem("userRole", "reader");
 
     navigate("/posts", { state: { email, role: "reader" } });
   };
