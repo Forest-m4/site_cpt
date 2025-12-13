@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Posts from "./pages/Posts";
 import MyPosts from "./pages/MyPosts";
+import Drafts from "./pages/Drafts";
 import Typography from "./components/ui/Typography";
 
 const App: React.FC = () => {
@@ -18,10 +19,7 @@ const App: React.FC = () => {
           <Route index element={<Navigate to="all" replace />} />
           <Route path="all" element={<Typography>Все посты...</Typography>} />
           <Route path="my" element={<MyPosts />} />
-          <Route
-            path="drafts"
-            element={<Typography>Черновики...</Typography>}
-          />
+          <Route path="drafts" element={<Drafts />} />
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
