@@ -1,54 +1,55 @@
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import Header from "../../Feature/Header";
-import Sidebar from "../../Feature/Sidebar";
-import PostsFilter from "../../components/layout/PostsFilter";
-import Typography from "../../components/ui/Typography";
-import UIButton from "../../components/ui/UiButton";
-import { PostFilterType } from "../../types/posts";
-import CreatePostModal from "../../Feature/CreatePostModal";
+import React from "react";
+import { useNavigate, Outlet, useMatch } from "react-router-dom";
 
-interface LocationState {
-  email?: string;
-  role?: "reader" | "author";
-}
+import Sidebar from "../../Feature/Sidebar";
+import Header from "../../Feature/Header";
 
 const Posts: React.FC = () => {
-  const location = useLocation();
-  const state = location.state as LocationState;
-  const userEmail = state?.email || "user@example.com";
-  const role = state?.role || "reader";
+  const navigate = useNavigate();
 
-  const [filter, setFilter] = useState<PostFilterType>("all");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const matchAll = useMatch("/posts/all");
+  const matchMy = useMatch("/posts/my");
+  const matchDrafts = useMatch("/posts/drafts");
 
-  const showCreateButton = role === "author" && filter === "my";
+  const tabs = [
+    { key: "all", label: "Все посты", match: matchAll },
+    { key: "my", label: "Мои посты", match: matchMy },
+    { key: "drafts", label: "Черновики", match: matchDrafts },
+  ];
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] relative">
       <Sidebar />
-      <Header email={userEmail} />
+      <Header email="user@example.com" />
 
       <main className="ml-[265px] mt-[40px] p-4 flex flex-col gap-4">
-        {role === "author" && (
-          <PostsFilter activeFilter={filter} onChange={setFilter} />
-        )}
+        {/* Панель вкладок */}
+        <div className="w-[360px] h-[42px] flex border rounded-md overflow-hidden bg-back mb-4">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => navigate(tab.key)}
+              className="w-1/3 h-full relative flex items-center justify-center"
+            >
+              <div
+                className={`absolute inset-1 rounded-md transition-colors duration-200 ${
+                  tab.match ? "bg-white" : "bg-back"
+                }`}
+              />
+              <span
+                className={`relative z-10 text-sm font-medium ${
+                  tab.match ? "text-primary" : "text-gray-500"
+                }`}
+              >
+                {tab.label}
+              </span>
+            </button>
+          ))}
+        </div>
 
-        {showCreateButton && (
-          <UIButton
-            size="md"
-            color="primary"
-            className="w-[978px] h-[40px]"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Создать пост
-          </UIButton>
-        )}
-
-        <Typography variant="subtitle-medium">Содержимое постов...</Typography>
+        <Outlet />
       </main>
-
-      {isModalOpen && <CreatePostModal onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 };
