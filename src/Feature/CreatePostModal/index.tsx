@@ -1,35 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Typography from "../../components/ui/Typography";
 import UIButton from "../../components/ui/UiButton";
 import { ImagePlus } from "lucide-react";
-import AddImageModal from "../AddImageModal"; // теперь это отдельный файл
+import AddImageModal from "../AddImageModal";
 
 interface CreatePostModalProps {
   onClose: () => void;
+  mode?: "create" | "edit";
+  initialData?: {
+    title?: string;
+    content?: string;
+  };
+  customTitle?: string;
 }
 
-const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose }) => {
+const CreatePostModal: React.FC<CreatePostModalProps> = ({
+  onClose,
+  mode = "create",
+  initialData,
+  customTitle,
+}) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isAddImageOpen, setIsAddImageOpen] = useState(false);
 
+  useEffect(() => {
+    if (initialData) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTitle(initialData.title || "");
+      setContent(initialData.content || "");
+    }
+  }, [initialData]);
+
   const handlePublish = () => {
-    console.log("Опубликовать пост:", { title, content });
+    if (mode === "create") {
+      console.log("Опубликовать новый пост:", { title, content });
+    } else {
+      console.log("Сохранить изменения поста:", { title, content });
+    }
     onClose();
   };
 
   const handleDraft = () => {
-    console.log("Отправить в черновики:", { title, content });
+    if (mode === "create") {
+      console.log("Отправить в черновики:", { title, content });
+    } else {
+      console.log("Сохранить как черновик:", { title, content });
+    }
     onClose();
   };
 
+  const modalTitle =
+    customTitle || (mode === "create" ? "Создать пост" : "Редактировать");
+
+  const publishButtonText =
+    mode === "create" ? "Опубликовать пост" : "Сохранить изменения";
+
   return (
     <>
-      {/* Основное окно */}
       <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-40">
         <div className="bg-white p-6 rounded-2xl w-[544px] h-[400px] flex flex-col gap-4">
-          <Typography variant="h4">Создать пост</Typography>
+          <Typography variant="h4">{modalTitle}</Typography>
 
           {/* Заголовок */}
           <div className="flex flex-col gap-1">
@@ -70,7 +102,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose }) => {
           {/* Кнопки */}
           <div className="flex gap-2 mt-auto">
             <UIButton size="sm" color="primary" onClick={handlePublish}>
-              Опубликовать пост
+              {publishButtonText}
             </UIButton>
 
             <UIButton size="sm" color="gray" onClick={handleDraft}>
@@ -80,10 +112,13 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose }) => {
         </div>
       </div>
 
-      {/* Портал для AddImageModal */}
+      {/* Портал для AddImageModal с передачей заголовка */}
       {isAddImageOpen &&
         createPortal(
-          <AddImageModal onClose={() => setIsAddImageOpen(false)} />,
+          <AddImageModal
+            onClose={() => setIsAddImageOpen(false)}
+            title={modalTitle} // заголовок передаётся сюда
+          />,
           document.body
         )}
     </>

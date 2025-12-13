@@ -6,7 +6,6 @@ import Register from "./pages/Register";
 import Posts from "./pages/Posts";
 import MyPosts from "./pages/MyPosts";
 import Drafts from "./pages/Drafts";
-import Typography from "./components/ui/Typography";
 
 const App: React.FC = () => {
   return (
@@ -17,7 +16,7 @@ const App: React.FC = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/posts" element={<Posts />}>
           <Route index element={<Navigate to="all" replace />} />
-          <Route path="all" element={<Typography>Все посты...</Typography>} />
+          <Route path="all" element={<div>Все посты...</div>} />
           <Route path="my" element={<MyPosts />} />
           <Route path="drafts" element={<Drafts />} />
         </Route>

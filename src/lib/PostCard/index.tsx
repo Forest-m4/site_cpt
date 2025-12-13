@@ -10,6 +10,7 @@ interface PostCardProps {
   content: string;
   likes: number;
   comments: number;
+  onEdit?: () => void;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -19,6 +20,7 @@ const PostCard: React.FC<PostCardProps> = ({
   content,
   likes,
   comments,
+  onEdit,
 }) => {
   return (
     <div className="w-[768px] h-[780px] bg-white rounded-2xl shadow p-6 flex flex-col gap-4">
@@ -51,7 +53,10 @@ const PostCard: React.FC<PostCardProps> = ({
         <UIButton className="w-[167px] h-[40px] bg-black text-white">
           Опубликовать пост
         </UIButton>
-        <UIButton className="w-[138px] h-[40px] bg-gray-200 text-black">
+        <UIButton
+          className="w-[138px] h-[40px] bg-gray-200 text-black"
+          onClick={onEdit}
+        >
           Редактировать
         </UIButton>
       </div>
@@ -59,7 +64,7 @@ const PostCard: React.FC<PostCardProps> = ({
       {/* Лайки и комментарии */}
       <div className="flex items-center gap-4 mt-auto">
         <div className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full">
-          <Heart className="w-4 h-4  text-muted" />
+          <Heart className="w-4 h-4 text-muted" />
           <Typography variant="body" color="muted">
             {likes}
           </Typography>
