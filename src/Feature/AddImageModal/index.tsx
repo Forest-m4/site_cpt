@@ -5,20 +5,21 @@ import { Trash2 } from "lucide-react";
 
 interface AddImageModalProps {
   onClose: () => void;
+  title: string;
 }
 
-const AddImageModal: React.FC<AddImageModalProps> = ({ onClose }) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+const AddImageModal: React.FC<AddImageModalProps> = ({ onClose, title }) => {
   const [showTrash, setShowTrash] = useState(false);
+  const [postTitle, setPostTitle] = useState("");
+  const [content, setContent] = useState("");
 
   const handlePublish = () => {
-    console.log("Опубликовать пост:", { title, content });
+    console.log(`${title}:`, { postTitle, content });
     onClose();
   };
 
   const handleDraft = () => {
-    console.log("Отправить в черновики:", { title, content });
+    console.log(`Черновик (${title}):`, { postTitle, content });
     onClose();
   };
 
@@ -30,15 +31,15 @@ const AddImageModal: React.FC<AddImageModalProps> = ({ onClose }) => {
   return (
     <div className="fixed inset-0 flex items-start justify-center bg-black/40 z-50 pt-20">
       <div className="bg-white p-6 rounded-2xl w-[544px] h-[600px] flex flex-col gap-4">
-        <Typography variant="h4">Создать пост</Typography>
+        <Typography variant="h4">{title}</Typography>
 
         <div className="flex flex-col gap-1">
           <Typography variant="subtitle-medium">Заголовок</Typography>
           <input
             type="text"
             placeholder="Введите заголовок"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={postTitle}
+            onChange={(e) => setPostTitle(e.target.value)}
             className="h-10 border rounded-md px-2"
           />
         </div>

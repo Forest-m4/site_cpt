@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import UIButton from "../../components/ui/UiButton";
 import CreatePostModal from "../../Feature/CreatePostModal";
-import PostCard from "../../lib/PostCard";
+import Typography from "../../components/ui/Typography";
 
 const MyPosts: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
     <div className="flex flex-col gap-4">
       <UIButton
@@ -17,16 +16,13 @@ const MyPosts: React.FC = () => {
         Создать пост
       </UIButton>
 
-      <PostCard
-        email="user@example.com"
-        date="12.12.2025"
-        title="Заголовок поста"
-        content="Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов. Предварительные выводы неутешительны: перспективное планирование не даёт нам иного выбора, кроме определения экономической целесообразности принимаемых решений."
-        likes={110}
-        comments={110}
-      />
+      <div className="flex flex-col gap-4">
+        <Typography>Постов нет</Typography>
+      </div>
 
-      {isModalOpen && <CreatePostModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <CreatePostModal onClose={() => setIsModalOpen(false)} mode="create" />
+      )}
     </div>
   );
 };
