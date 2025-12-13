@@ -32,8 +32,7 @@ const Posts: React.FC = () => {
       <Sidebar />
       <Header email={userEmail} />
 
-      <main className="ml-[265px] mt-[40px] p-4 flex flex-col gap-4">
-        {/* Панель вкладок */}
+      <main className="mt-[40px] flex flex-col gap-4 pl-[360px] pr-[120px]">
         <div className="w-[360px] h-[42px] flex border rounded-md overflow-hidden bg-back mb-4">
           {tabs.map((tab) => (
             <button
