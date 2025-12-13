@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SidebarItem from "../../components/layout/SidebarItem";
-import { FileText, Users } from "lucide-react";
+import { FileText, Phone } from "lucide-react";
 
 const Sidebar: React.FC = () => {
   const [activeItem, setActiveItem] = useState<"posts" | "contacts">("posts");
@@ -14,7 +14,7 @@ const Sidebar: React.FC = () => {
         onClick={() => setActiveItem("posts")}
       />
       <SidebarItem
-        icon={Users}
+        icon={Phone}
         label="Контакты"
         active={activeItem === "contacts"}
         onClick={() => setActiveItem("contacts")}

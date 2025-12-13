@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../../Feature/Header";
 import Sidebar from "../../Feature/Sidebar";
 import PostsFilter from "../../components/layout/PostsFilter";
-import DarkButton from "../../components/layout/DarkButton";
 import Typography from "../../components/ui/Typography";
+import UIButton from "../../components/ui/UiButton";
 import { PostFilterType } from "../../types/posts";
 import CreatePostModal from "../../Feature/CreatePostModal";
 
@@ -31,25 +31,21 @@ const Posts: React.FC = () => {
 
       <main className="ml-[265px] mt-[40px] p-4 flex flex-col gap-4">
         {role === "author" && (
-          <div className="flex items-center gap-2">
-            <PostsFilter activeFilter={filter} onChange={setFilter} />
-          </div>
+          <PostsFilter activeFilter={filter} onChange={setFilter} />
         )}
 
         {showCreateButton && (
-          <div className="mt-2">
-            <DarkButton
-              style={{ width: "978px", height: "40px" }}
-              onClick={() => setIsModalOpen(true)}
-            >
-              <Typography variant="subtitle-medium" color="white">
-                Создать пост
-              </Typography>
-            </DarkButton>
-          </div>
+          <UIButton
+            size="md"
+            color="primary"
+            className="w-[978px] h-[40px]"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Создать пост
+          </UIButton>
         )}
 
-        <div className="text-lg font-medium">Содержимое постов...</div>
+        <Typography variant="subtitle-medium">Содержимое постов...</Typography>
       </main>
 
       {isModalOpen && <CreatePostModal onClose={() => setIsModalOpen(false)} />}
