@@ -57,7 +57,7 @@ const Posts: React.FC = () => {
           ))}
         </div>
 
-        <Outlet />
+        <Outlet context={{ email: userEmail }} />
       </main>
     </div>
   );
