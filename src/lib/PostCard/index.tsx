@@ -11,6 +11,7 @@ interface PostCardProps {
   likes: number;
   comments: number;
   onEdit?: () => void;
+  showPublish?: boolean;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -21,48 +22,55 @@ const PostCard: React.FC<PostCardProps> = ({
   likes,
   comments,
   onEdit,
+  showPublish = false,
 }) => {
+  const hasActions = showPublish || onEdit;
   return (
-    <div className="w-[768px] h-[780px] bg-white rounded-2xl shadow p-6 flex flex-col gap-4">
+    <div className="w-[768px] bg-white rounded-2xl shadow p-6 flex flex-col gap-4">
       {/* Верхняя панель */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gray-300 rounded-full" />
-          <div className="flex flex-col">
-            <Typography variant="body">{email}</Typography>
-            <Typography variant="detail" className="text-gray-500">
-              {date}
-            </Typography>
-          </div>
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-12 bg-gray-300 rounded-full" />
+        <div className="flex flex-col">
+          <Typography variant="body">{email}</Typography>
+          <Typography variant="detail" className="text-gray-500">
+            {date}
+          </Typography>
         </div>
       </div>
 
       {/* Заголовок */}
       <Typography variant="h4">{title}</Typography>
 
-      {/* Серая панелька */}
-      <div className="w-[736px] h-[432px] bg-gray-200 rounded-md flex items-center justify-center">
-        <Typography variant="body" className="text-gray-400"></Typography>
-      </div>
+      {/* Картинка-заглушка */}
+      <div className="w-full h-[432px] bg-gray-200 rounded-md" />
 
-      {/* Текст поста */}
+      {/* Текст */}
       <Typography variant="body">{content}</Typography>
 
       {/* Кнопки */}
-      <div className="flex gap-3 mt-1">
-        <UIButton className="w-[167px] h-[40px] bg-black text-white">
-          Опубликовать пост
-        </UIButton>
-        <UIButton
-          className="w-[138px] h-[40px] bg-gray-200 text-black"
-          onClick={onEdit}
-        >
-          Редактировать
-        </UIButton>
-      </div>
+      {hasActions && (
+        <div className="flex gap-3 mt-1">
+          {showPublish && (
+            <UIButton className="w-[167px] h-[40px] bg-black text-white">
+              Опубликовать пост
+            </UIButton>
+          )}
+
+          {onEdit && (
+            <UIButton
+              className="w-[138px] h-[40px] bg-gray-200 text-black"
+              onClick={onEdit}
+            >
+              Редактировать
+            </UIButton>
+          )}
+        </div>
+      )}
 
       {/* Лайки и комментарии */}
-      <div className="flex items-center gap-4 mt-auto">
+      <div
+        className={`flex items-center gap-4 ${hasActions ? "mt-auto" : "pt-2"}`}
+      >
         <div className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full">
           <Heart className="w-4 h-4 text-muted" />
           <Typography variant="body" color="muted">
