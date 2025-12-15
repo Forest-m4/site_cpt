@@ -22,6 +22,7 @@ const Drafts: React.FC = () => {
         content={selectedPost!.content}
         likes={110}
         comments={110}
+        showPublish={true}
         onEdit={() => setIsModalOpen(true)}
       />
 
