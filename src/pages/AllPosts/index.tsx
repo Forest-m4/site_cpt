@@ -1,11 +1,13 @@
 import React from "react";
+import { useOutletContext } from "react-router-dom";
 import PostCard from "../../lib/PostCard";
 
 const AllPosts: React.FC = () => {
+  const { email } = useOutletContext<{ email: string }>();
+
   const post = {
-    email: "user@example.com",
     date: "31 декабря",
-    title: "Публичный пост",
+    title: "Заголовок",
     content:
       "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов. Предварительные выводы неутешительны: перспективное планирование не даёт нам иного выбора, кроме определения экономической целесообразности принимаемых решений.",
     likes: 110,
@@ -15,7 +17,7 @@ const AllPosts: React.FC = () => {
   return (
     <div className="flex flex-col gap-4">
       <PostCard
-        email={post.email}
+        email={email}
         date={post.date}
         title={post.title}
         content={post.content}

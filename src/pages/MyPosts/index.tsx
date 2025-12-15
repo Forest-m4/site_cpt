@@ -1,15 +1,16 @@
 import React, { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import UIButton from "../../components/ui/UiButton";
 import CreatePostModal from "../../Feature/CreatePostModal";
 import PostCard from "../../lib/PostCard";
 
 const MyPosts: React.FC = () => {
+  const { email } = useOutletContext<{ email: string }>();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const myPost = {
-    email: "user@example.com",
     date: "31 декабря",
-    title: "Мой пост",
+    title: "Заголовок",
     content:
       "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов. Предварительные выводы неутешительны: перспективное планирование не даёт нам иного выбора, кроме определения экономической целесообразности принимаемых решений.",
     likes: 42,
@@ -27,18 +28,17 @@ const MyPosts: React.FC = () => {
         Создать пост
       </UIButton>
 
-      {/* Пост */}
       <PostCard
-        email={myPost.email}
+        email={email}
         date={myPost.date}
         title={myPost.title}
         content={myPost.content}
         likes={myPost.likes}
         comments={myPost.comments}
         onEdit={() => console.log("edit")}
-        showPublish={false} // 👈 ВАЖНО
+        showPublish={false}
       />
-      {/* Модалка создания */}
+
       {isModalOpen && (
         <CreatePostModal onClose={() => setIsModalOpen(false)} mode="create" />
       )}
