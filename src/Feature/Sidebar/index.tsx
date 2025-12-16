@@ -1,44 +1,52 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FileText, Phone, LogOut } from "lucide-react";
 import SidebarItem from "../../components/layout/SidebarItem";
 import { useAuth } from "../../context/AuthContext";
 
-const Sidebar: React.FC = () => {
-  const [activeItem, setActiveItem] = useState<"posts" | "contacts">("posts");
-  const { logout } = useAuth();
+interface SidebarProps {
+  className?: string;
+}
 
+const Sidebar: React.FC<SidebarProps> = ({ className }) => {
+  const { logout } = useAuth();
+  const [activeItem, setActiveItem] = useState<"posts" | "contacts">("posts");
   const [visible, setVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY.current;
 
-      if (currentScrollY > lastScrollY && currentScrollY > 150) {
+      if (delta > 5 && currentScrollY > 50) {
         setVisible(false);
-      } else {
+      } else if (delta < -3) {
         setVisible(true);
       }
 
-      setLastScrollY(currentScrollY);
+      lastScrollY.current = currentScrollY;
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   return (
     <aside
       className={`
-        fixed top-[112px] left-[170px]
-        h-[calc(100vh-128px)]
+        fixed top-[96px]
         w-48
-        flex flex-col justify-between
-        transition-transform duration-300 ease-out
-        ${visible ? "translate-y-0" : "-translate-y-24"}
+        flex flex-col justify-between h-[calc(100vh-96px)]
+        transition-transform duration-200 ease-out
+        overflow-y-auto
+        ${className || ""}
       `}
+      style={{
+        transform: visible ? "translateY(0)" : "translateY(-120px)",
+        opacity: visible ? 1 : 0.95,
+      }}
     >
-      <div className="px-6 flex flex-col gap-2 w-full">
+      <div className="px-6 flex flex-col gap-2 pt-4">
         <SidebarItem
           icon={FileText}
           label="Посты"
@@ -52,7 +60,8 @@ const Sidebar: React.FC = () => {
           onClick={() => setActiveItem("contacts")}
         />
       </div>
-      <div className="px-6 pb-4">
+
+      <div className="px-6 pb-6 mt-auto">
         <SidebarItem icon={LogOut} label="Выйти" onClick={logout} />
       </div>
     </aside>

@@ -25,9 +25,9 @@ const PostCard: React.FC<PostCardProps> = ({
   showPublish = false,
 }) => {
   const hasActions = showPublish || onEdit;
+
   return (
-    <div className="w-[768px] bg-white rounded-2xl shadow p-6 flex flex-col gap-4">
-      {/* Верхняя панель */}
+    <div className="w-full max-w-[768px] bg-white rounded-2xl shadow p-6 flex flex-col gap-4 mx-auto">
       <div className="flex items-center gap-3">
         <div className="w-12 h-12 bg-gray-300 rounded-full" />
         <div className="flex flex-col">
@@ -38,16 +38,12 @@ const PostCard: React.FC<PostCardProps> = ({
         </div>
       </div>
 
-      {/* Заголовок */}
       <Typography variant="h4">{title}</Typography>
 
-      {/* Картинка-заглушка */}
       <div className="w-full h-[432px] bg-gray-200 rounded-md" />
 
-      {/* Текст */}
       <Typography variant="body">{content}</Typography>
 
-      {/* Кнопки */}
       {hasActions && (
         <div className="flex gap-3 mt-1">
           {showPublish && (
@@ -67,7 +63,6 @@ const PostCard: React.FC<PostCardProps> = ({
         </div>
       )}
 
-      {/* Лайки и комментарии */}
       <div
         className={`flex items-center gap-4 ${hasActions ? "mt-auto" : "pt-2"}`}
       >
