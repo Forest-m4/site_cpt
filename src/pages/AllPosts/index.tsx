@@ -1,30 +1,35 @@
-import React from "react";
-import { useOutletContext } from "react-router-dom";
+import { useEffect, useState } from "react";
 import PostCard from "../../lib/PostCard";
+import { postsApi } from "../../api/posts.api";
+import { Post } from "../../models/Post";
 
 const AllPosts: React.FC = () => {
-  const { email } = useOutletContext<{ email: string }>();
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const post = {
-    date: "31 декабря",
-    title: "Заголовок",
-    content:
-      "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов. Предварительные выводы неутешительны: перспективное планирование не даёт нам иного выбора, кроме определения экономической целесообразности принимаемых решений.",
-    likes: 110,
-    comments: 110,
-  };
+  useEffect(() => {
+    postsApi
+      .getAll()
+      .then((res) => setPosts(res.data))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <div>Загрузка...</div>;
 
   return (
     <div className="flex flex-col gap-4">
-      <PostCard
-        email={email}
-        date={post.date}
-        title={post.title}
-        content={post.content}
-        likes={post.likes}
-        comments={post.comments}
-        showPublish={false}
-      />
+      {posts.map((post) => (
+        <PostCard
+          key={post.id}
+          email={post.authorEmail}
+          date={new Date(post.createdAt).toLocaleDateString()}
+          title={post.title}
+          content={post.content}
+          likes={post.likes}
+          comments={post.commentsCount}
+          showPublish={false}
+        />
+      ))}
     </div>
   );
 };

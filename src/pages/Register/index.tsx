@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import InputField from "../../components/layout/InputField";
 import RoleSwitch from "../../components/layout/RoleSwitch";
@@ -18,10 +18,15 @@ const Register: React.FC = () => {
       alert("Пароли не совпадают");
       return;
     }
-    localStorage.setItem("userEmail", email);
-    localStorage.setItem("userRole", role);
 
-    navigate("/posts", { state: { email, role } });
+    try {
+      localStorage.setItem("userEmail", email);
+      localStorage.setItem("userRole", role);
+
+      navigate("/posts", { state: { email, role } });
+    } catch {
+      alert("Ошибка при регистрации");
+    }
   };
 
   return (

@@ -4,7 +4,8 @@ import React, {
   useState,
   ReactNode,
   useMemo,
-} from "react"; // ← добавьте useMemo
+} from "react";
+import api from "../api/axios";
 
 interface User {
   id: string;
@@ -14,7 +15,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (userData: User) => void;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -29,10 +30,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  const login = (userData: User) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", "mock-jwt-token");
+  const login = async (email: string, password: string) => {
+    try {
+      const response = await api.post("/auth/login", { email, password });
+      const { user, token } = response.data;
+
+      setUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+    } catch (err) {
+      console.error("Login failed:", err);
+      throw err;
+    }
   };
 
   const logout = () => {
@@ -43,7 +52,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const isAuthenticated = !!user;
 
-  // Используем useMemo для стабильного значения контекста
   const contextValue = useMemo(
     () => ({
       user,
@@ -51,24 +59,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       logout,
       isAuthenticated,
     }),
-    [user, isAuthenticated]
+    [isAuthenticated, user]
   );
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {" "}
-      {/* ← передаем memoized значение */}
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 
-// Экспортируем только хук, чтобы исправить ESLint ошибку
 // eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 };

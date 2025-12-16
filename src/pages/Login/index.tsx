@@ -1,13 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import InputField from "../../components/layout/InputField";
 import Typography from "../../components/ui/Typography";
 import UIButton from "../../components/ui/UiButton";
+import { useAuth } from "../../context/AuthContext";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,10 +17,15 @@ const Login: React.FC = () => {
       alert("Введите email и пароль");
       return;
     }
-    localStorage.setItem("userEmail", email);
-    localStorage.setItem("userRole", "reader");
 
-    navigate("/posts", { state: { email, role: "reader" } });
+    try {
+      localStorage.setItem("userEmail", email);
+      localStorage.setItem("userRole", "reader");
+
+      navigate("/posts", { state: { email, role: "reader" } });
+    } catch {
+      alert("Ошибка при входе");
+    }
   };
 
   return (
