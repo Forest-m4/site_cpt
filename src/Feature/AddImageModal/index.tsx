@@ -29,7 +29,7 @@ const AddImageModal: React.FC<AddImageModalProps> = ({ onClose, title }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-start justify-center bg-black/40 z-50 pt-20">
+    <div className="fixed inset-0 flex items-start justify-center bg-black/40 z-50 pt-40">
       <div className="bg-white p-6 rounded-2xl w-[544px] h-[600px] flex flex-col gap-4">
         <Typography variant="h4">{title}</Typography>
 
@@ -81,8 +81,9 @@ const AddImageModal: React.FC<AddImageModalProps> = ({ onClose, title }) => {
           </UIButton>
 
           <UIButton
+            color="gray"
             onClick={handleDraft}
-            className="w-[196px] h-[40px] bg-gray-200 text-black"
+            className="w-[196px] h-[40px] bg-gray-200 text-black "
           >
             Отправить в черновики
           </UIButton>

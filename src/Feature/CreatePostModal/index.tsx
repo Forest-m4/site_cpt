@@ -112,12 +112,12 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         </div>
       </div>
 
-      {/* Портал для AddImageModal с передачей заголовка */}
+      {/* Передача заголовка */}
       {isAddImageOpen &&
         createPortal(
           <AddImageModal
             onClose={() => setIsAddImageOpen(false)}
-            title={modalTitle} // заголовок передаётся сюда
+            title={modalTitle}
           />,
           document.body
         )}
