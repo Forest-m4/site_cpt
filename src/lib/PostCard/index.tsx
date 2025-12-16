@@ -56,6 +56,7 @@ const PostCard: React.FC<PostCardProps> = ({
             <UIButton
               className="w-[138px] h-[40px] bg-gray-200 text-black"
               onClick={onEdit}
+              color="gray"
             >
               Редактировать
             </UIButton>

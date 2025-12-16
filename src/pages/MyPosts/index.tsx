@@ -13,8 +13,8 @@ const MyPosts: React.FC = () => {
     title: "Заголовок",
     content:
       "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов. Предварительные выводы неутешительны: перспективное планирование не даёт нам иного выбора, кроме определения экономической целесообразности принимаемых решений.",
-    likes: 42,
-    comments: 5,
+    likes: 110,
+    comments: 110,
   };
 
   return (
@@ -35,12 +35,17 @@ const MyPosts: React.FC = () => {
         content={myPost.content}
         likes={myPost.likes}
         comments={myPost.comments}
-        onEdit={() => console.log("edit")}
+        onEdit={() => setIsModalOpen(true)}
         showPublish={false}
       />
 
       {isModalOpen && (
-        <CreatePostModal onClose={() => setIsModalOpen(false)} mode="create" />
+        <CreatePostModal
+          onClose={() => setIsModalOpen(false)}
+          mode="edit"
+          initialData={{ title: myPost.title, content: myPost.content }}
+          customTitle="Редактировать"
+        />
       )}
     </div>
   );
