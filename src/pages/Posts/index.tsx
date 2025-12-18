@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate, useMatch } from "react-router-dom";
 
 import Sidebar from "../../Feature/Sidebar";
 import Header from "../../Feature/Header";
+import AdBanner from "../../components/layout/AdBanner";
 
 interface LocationState {
   email?: string;
@@ -51,6 +52,20 @@ const Posts: React.FC = () => {
             style={{ width: SIDEBAR_WIDTH }}
           >
             <Sidebar />
+          </div>
+
+          {/* Реклама */}
+          <div
+            className="fixed"
+            style={{
+              width: 208,
+              top: "144px",
+              left: `calc(50% + ${POSTS_WIDTH / 2}px + 32px)`,
+            }}
+          >
+            <div className="flex flex-col gap-6">
+              <AdBanner />
+            </div>
           </div>
 
           {/*  Кнопки */}
