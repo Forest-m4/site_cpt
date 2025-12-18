@@ -1,32 +1,29 @@
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import PostCard from "../../lib/PostCard";
+import PostCard, { PostData } from "../../lib/PostCard";
 import CreatePostModal from "../../Feature/CreatePostModal";
 
-type OutletContextType = {
-  email: string;
-};
-
 const Drafts: React.FC = () => {
-  const { email } = useOutletContext<OutletContextType>();
-
+  const { email } = useOutletContext<{ email: string }>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPost] = useState({
+
+  const draftPost: PostData = {
+    id: 999, // временный id
+    date: "31 декабря",
     title: "Заголовок",
     content:
       "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов.",
-  });
+    likes: 110,
+    comments: 110,
+  };
 
   return (
     <div className="flex flex-col gap-4">
       <PostCard
+        post={draftPost}
         email={email}
-        date="31 декабря"
-        title={selectedPost.title}
-        content={selectedPost.content}
-        likes={110}
-        comments={110}
-        showPublish={true}
+        clickable={false}
+        showPublish
         onEdit={() => setIsModalOpen(true)}
       />
 
@@ -34,7 +31,10 @@ const Drafts: React.FC = () => {
         <CreatePostModal
           onClose={() => setIsModalOpen(false)}
           mode="edit"
-          initialData={selectedPost}
+          initialData={{
+            title: draftPost.title,
+            content: draftPost.content,
+          }}
           customTitle="Редактировать"
         />
       )}

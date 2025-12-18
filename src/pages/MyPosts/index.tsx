@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import UIButton from "../../components/ui/UiButton";
 import CreatePostModal from "../../Feature/CreatePostModal";
-import PostCard from "../../lib/PostCard";
+import PostCard, { PostData } from "../../lib/PostCard";
 
 const MyPosts: React.FC = () => {
   const { email } = useOutletContext<{ email: string }>();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const myPost = {
+  const myPost: PostData = {
+    id: 10,
     date: "31 декабря",
-    title: "Заголовок",
+    title: "Мой пост",
     content:
-      "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов. Предварительные выводы неутешительны: перспективное планирование не даёт нам иного выбора, кроме определения экономической целесообразности принимаемых решений.",
+      "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов.",
     likes: 110,
     comments: 110,
   };
@@ -29,21 +30,19 @@ const MyPosts: React.FC = () => {
       </UIButton>
 
       <PostCard
+        post={myPost}
         email={email}
-        date={myPost.date}
-        title={myPost.title}
-        content={myPost.content}
-        likes={myPost.likes}
-        comments={myPost.comments}
         onEdit={() => setIsModalOpen(true)}
-        showPublish={false}
       />
 
       {isModalOpen && (
         <CreatePostModal
           onClose={() => setIsModalOpen(false)}
           mode="edit"
-          initialData={{ title: myPost.title, content: myPost.content }}
+          initialData={{
+            title: myPost.title,
+            content: myPost.content,
+          }}
           customTitle="Редактировать"
         />
       )}

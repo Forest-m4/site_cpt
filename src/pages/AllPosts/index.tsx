@@ -1,48 +1,34 @@
-import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import PostCard from "../../lib/PostCard";
-
-type OutletContextType = {
-  email: string;
-};
+import PostCard, { PostData } from "../../lib/PostCard";
 
 const AllPosts: React.FC = () => {
-  const { email } = useOutletContext<OutletContextType>();
+  const { email } = useOutletContext<{ email: string }>();
 
-  const [posts] = useState([
+  const posts: PostData[] = [
     {
       id: 1,
       date: "31 декабря",
-      title: "Заголовок",
+      title: "Первый пост",
       content:
-        "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов. Предварительные выводы неутешительны: перспективное планирование не даёт нам иного выбора, кроме определения экономической целесообразности принимаемых решений.",
+        "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов.",
       likes: 110,
       comments: 110,
     },
     {
-      id: 1,
-      date: "31 декабря",
-      title: "Заголовок",
+      id: 2,
+      date: "30 декабря",
+      title: "Второй пост",
       content:
-        "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов. Предварительные выводы неутешительны: перспективное планирование не даёт нам иного выбора, кроме определения экономической целесообразности принимаемых решений.",
-      likes: 110,
-      comments: 110,
+        "Предварительные выводы неутешительны: перспективное планирование не даёт нам иного выбора.",
+      likes: 52,
+      comments: 12,
     },
-  ]);
+  ];
 
   return (
     <div className="flex flex-col gap-4">
       {posts.map((post) => (
-        <PostCard
-          key={post.id}
-          email={email}
-          date={post.date}
-          title={post.title}
-          content={post.content}
-          likes={post.likes}
-          comments={post.comments}
-          showPublish={false}
-        />
+        <PostCard key={post.id} post={post} email={email} />
       ))}
     </div>
   );

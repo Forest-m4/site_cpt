@@ -14,3 +14,9 @@ body {
   --color-white: #ffffff;
   --color-slate500: #334155;
 }
+
+@layer base {
+  html {
+    overflow-y: scroll;
+  }
+}
