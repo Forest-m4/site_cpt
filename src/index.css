@@ -2,10 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-white font-inter;
-}
-:root {
+@theme {
   --color-primary: #0f172a;
   --color-secondary: #94a3b8;
   --color-accent: #6366f1;
@@ -13,6 +10,10 @@ body {
   --color-back: #f1f5f9;
   --color-white: #ffffff;
   --color-slate500: #334155;
+}
+
+body {
+  @apply bg-white font-inter;
 }
 
 @layer base {

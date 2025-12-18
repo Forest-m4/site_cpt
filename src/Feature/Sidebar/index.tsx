@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
   return (
     <aside
       className={`
-        fixed top-[96px]
+        fixed top-[84px]
         w-48
         flex flex-col justify-between h-[calc(100vh-96px)]
         transition-transform duration-200 ease-out
