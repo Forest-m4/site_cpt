@@ -59,7 +59,7 @@ const Posts: React.FC = () => {
             className="fixed"
             style={{
               width: 208,
-              top: "144px",
+              top: "155px",
               left: `calc(50% + ${POSTS_WIDTH / 2}px + 32px)`,
             }}
           >

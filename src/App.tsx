@@ -7,6 +7,7 @@ import Posts from "./pages/Posts";
 import AllPosts from "./pages/AllPosts";
 import MyPosts from "./pages/MyPosts";
 import Drafts from "./pages/Drafts";
+import PostPage from "./pages/PostPage";
 
 const App: React.FC = () => {
   const isLoggedIn = !!localStorage.getItem("userEmail");
@@ -32,6 +33,7 @@ const App: React.FC = () => {
           <Route path="all" element={<AllPosts />} />
           <Route path="my" element={<MyPosts />} />
           <Route path="drafts" element={<Drafts />} />
+          <Route path=":id" element={<PostPage />} /> {/* 👈 вот он */}
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
