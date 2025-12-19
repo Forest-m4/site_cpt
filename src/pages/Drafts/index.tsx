@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import PostCard, { PostData } from "../../lib/PostCard";
+import PostCard, { PostData } from "../../Feature/PostCard";
 import CreatePostModal from "../../Feature/CreatePostModal";
 
 const Drafts: React.FC = () => {
@@ -8,11 +8,11 @@ const Drafts: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const draftPost: PostData = {
-    id: 999, // временный id
+    id: 1,
     date: "31 декабря",
     title: "Заголовок",
     content:
-      "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов.",
+      "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов. Предварительные выводы неутешительны: перспективное планирование не даёт нам иного выбора, кроме определения экономической целесообразности принимаемых решений.",
     likes: 110,
     comments: 110,
   };
