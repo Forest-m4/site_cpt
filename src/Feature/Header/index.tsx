@@ -10,7 +10,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ email, avatarUrl }) => {
   return (
     <header className="w-full bg-white">
-      <div className="mx-auto flex items-center gap-12 py-4 max-w-[68rem]">
+      <div className="mx-auto flex items-center gap-12 py-4 max-w-[68rem] select-none">
         <div className="shrink-0">
           <HeaderLogo />
         </div>

@@ -1,5 +1,5 @@
 import { useLocation, Navigate } from "react-router-dom";
-import PostCard from "../../lib/PostCard";
+import PostCard from "../../Feature/PostCard";
 
 const PostPage: React.FC = () => {
   const location = useLocation();

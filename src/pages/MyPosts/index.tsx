@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import UIButton from "../../components/ui/UiButton";
 import CreatePostModal from "../../Feature/CreatePostModal";
-import PostCard, { PostData } from "../../lib/PostCard";
+import PostCard, { PostData } from "../../Feature/PostCard";
 
 const MyPosts: React.FC = () => {
   const { email } = useOutletContext<{ email: string }>();
@@ -13,7 +13,7 @@ const MyPosts: React.FC = () => {
     date: "31 декабря",
     title: "Мой пост",
     content:
-      "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов.",
+      "Повседневная практика показывает, что социально-экономическое развитие способствует подготовке и реализации распределения внутренних резервов и ресурсов. Предварительные выводы неутешительны: перспективное планирование не даёт нам иного выбора, кроме определения экономической целесообразности принимаемых решений.",
     likes: 110,
     comments: 110,
   };
