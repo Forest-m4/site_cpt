@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { db } from './lib/db';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  async testDb(): Promise<any[]> {
+    const result = await db.execute('SELECT 1');
+    return result;
   }
 }
