@@ -1,0 +1,43 @@
+# Node.js
+node_modules/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Build output
+/dist
+/build
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+/.idea
+/.vscode
+*.sublime-workspace
+
+# Environment variables
+.env
+.env.*.local
+
+# Temporary files
+.temp
+.tmp
+*.seed
+*.pid
+*.pid.lock
+
+# Coverage / tests
+/coverage
+/.nyc_output
+
+# Docker
+docker-compose.override.yml
