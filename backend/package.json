@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@knaadh/nestjs-drizzle-pg": "^1.2.0",
+    "@nestjs/config": "^4.0.2",
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.1",
     "eslint": "^9.39.2",
