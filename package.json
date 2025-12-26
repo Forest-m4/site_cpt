@@ -1,7 +1,18 @@
 {
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:backend": "turbo run dev --filter=backend",
+    "dev:frontend": "turbo run dev --filter=frontend",
+    "build": "turbo run build",
+    "lint": "turbo run lint"
+  },
   "dependencies": {
-    "@knaadh/nestjs-drizzle-pg": "^1.2.0",
-    "drizzle-orm": "^0.45.1",
-    "pg": "^8.16.3"
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.10",
+    "nestjs-zod": "^5.0.1"
   }
 }
