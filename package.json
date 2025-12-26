@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@knaadh/nestjs-drizzle-pg": "^1.2.0",
+    "drizzle-orm": "^0.45.1",
+    "pg": "^8.16.3"
+  }
+}
