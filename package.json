@@ -1,5 +1,6 @@
 {
   "private": true,
+  "packageManager": "npm@9.8.0",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -14,5 +15,8 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.10",
     "nestjs-zod": "^5.0.1"
+  },
+  "devDependencies": {
+    "turbo": "^2.7.2"
   }
 }
