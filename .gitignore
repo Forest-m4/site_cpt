@@ -4,6 +4,9 @@ pnpm-lock.yaml
 package-lock.json
 yarn.lock
 
+# Turbo cache
+.turbo
+
 # Build output
 /dist
 /build
