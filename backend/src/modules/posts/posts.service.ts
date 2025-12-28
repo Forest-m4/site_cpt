@@ -1,9 +1,9 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
-import { posts } from '../lib/infrastructure/db/schema';
-import { CreatePostDto } from '../modules/posts/dto/create-post.dto';
-import { UpdatePostDto } from '../modules/posts/dto/update-post.dto';
-import { PaginationDto } from '../modules/posts/dto/pagination.dto';
+import { posts } from '../../lib/infrastructure/db/schema';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Injectable()
 export class PostsService {

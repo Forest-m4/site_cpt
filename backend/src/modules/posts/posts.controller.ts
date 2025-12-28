@@ -7,28 +7,24 @@ import {
   Patch,
   Post,
   Query,
-  UsePipes,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { ZodValidationPipe } from 'nestjs-zod';
 
-import * as createPostDto from '../modules/posts/dto/create-post.dto';
-import * as updatePostDto from '../modules/posts/dto/update-post.dto';
-import * as paginationDto from '../modules/posts/dto/pagination.dto';
+import type { CreatePostDto } from './dto/create-post.dto';
+import type { UpdatePostDto } from './dto/update-post.dto';
+import type { PaginationDto } from './dto/pagination.dto';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  @UsePipes(new ZodValidationPipe(createPostDto.createPostSchema))
-  create(@Body() dto: createPostDto.CreatePostDto) {
+  create(@Body() dto: CreatePostDto) {
     return this.postsService.create(dto);
   }
 
   @Get()
-  @UsePipes(new ZodValidationPipe(paginationDto.paginationSchema))
-  findAll(@Query() query: paginationDto.PaginationDto) {
+  findAll(@Query() query: PaginationDto) {
     return this.postsService.findAll(query);
   }
 
@@ -38,8 +34,7 @@ export class PostsController {
   }
 
   @Patch(':id')
-  @UsePipes(new ZodValidationPipe(updatePostDto.updatePostSchema))
-  update(@Param('id') id: string, @Body() dto: updatePostDto.UpdatePostDto) {
+  update(@Param('id') id: string, @Body() dto: UpdatePostDto) {
     return this.postsService.update(Number(id), dto);
   }
 

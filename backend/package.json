@@ -22,6 +22,8 @@
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
+    "@nestjs/testing": "^11.1.10",
+    "@types/jest": "^30.0.0",
     "drizzle-kit": "^0.31.8",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
