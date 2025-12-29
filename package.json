@@ -2,19 +2,15 @@
   "private": true,
   "packageManager": "npm@9.8.0",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "backend",
+    "frontend"
   ],
   "scripts": {
+    "dev": "turbo run dev",
     "dev:backend": "turbo run dev --filter=backend",
     "dev:frontend": "turbo run dev --filter=frontend",
     "build": "turbo run build",
     "lint": "turbo run lint"
-  },
-  "dependencies": {
-    "@nestjs/config": "^4.0.2",
-    "@nestjs/core": "^11.1.10",
-    "nestjs-zod": "^5.0.1"
   },
   "devDependencies": {
     "turbo": "^2.7.2"
