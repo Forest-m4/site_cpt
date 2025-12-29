@@ -1,13 +1,19 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
+import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import * as schema from '../../lib/infrastructure/db/schema';
 import { posts } from '../../lib/infrastructure/db/schema';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
-import { PaginationDto } from './dto/pagination.dto';
+
+import type { CreatePostDto } from './dto/create-post.dto';
+import type { UpdatePostDto } from './dto/update-post.dto';
+import type { PaginationDto } from './dto/pagination.dto';
 
 @Injectable()
 export class PostsService {
-  constructor(@Inject('DB') private readonly db: any) {}
+  constructor(
+    @Inject('DB')
+    private readonly db: NodePgDatabase<typeof schema>,
+  ) {}
 
   async create(dto: CreatePostDto) {
     const [post] = await this.db.insert(posts).values(dto).returning();

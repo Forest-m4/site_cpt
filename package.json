@@ -2,8 +2,8 @@
   "private": true,
   "packageManager": "npm@9.8.0",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "backend",
+    "frontend"
   ],
   "scripts": {
     "dev": "turbo run dev",
