@@ -1,11 +1,20 @@
-export enum UserRole {
-  READER = 'READER',
-  AUTHOR = 'AUTHOR',
+export enum UserRoleEnum {
+  READER = 'reader',
+  AUTHOR = 'author',
 }
 
-export interface User {
+export type UserRole = 'reader' | 'author';
+
+export interface UserEntity {
   id: number;
   email: string;
-  password: string; // хэш
-  role: UserRole;
+  password: string;
+  role: UserRoleEnum;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
+
+export const UserRole = {
+  READER: 'reader' as const,
+  AUTHOR: 'author' as const,
+};

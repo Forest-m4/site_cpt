@@ -1,4 +1,11 @@
-import { pgTable, serial, varchar, text, integer } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  serial,
+  varchar,
+  text,
+  integer,
+  timestamp,
+} from 'drizzle-orm/pg-core';
 import { users } from './user.schema';
 
 export const posts = pgTable('posts', {
@@ -8,4 +15,6 @@ export const posts = pgTable('posts', {
   userId: integer('user_id')
     .notNull()
     .references(() => users.id),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });

@@ -3,11 +3,11 @@ import {
   UnauthorizedException,
   ConflictException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
+import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -17,23 +17,19 @@ export class AuthService {
   ) {}
 
   async register(dto: CreateUserDto) {
-    const exists = this.usersService.findByEmail(dto.email);
-    if (exists) {
-      throw new ConflictException('User already exists');
-    }
+    const existingUser = await this.usersService.findByEmail(dto.email);
+    if (existingUser) throw new ConflictException('User already exists');
 
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
-
-    const user = this.usersService.create({
+    const user = await this.usersService.create({
       email: dto.email,
-      password: hashedPassword,
-      role: dto.role,
+      password: dto.password,
+      role: dto.role ?? 'reader',
     });
 
-    const payload = { sub: user.id, role: user.role };
+    const payload = { sub: user.id, email: user.email, role: user.role };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
       user: {
         id: user.id,
         email: user.email,
@@ -43,20 +39,16 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
-    const user = this.usersService.findByEmail(dto.email);
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
+    const user = await this.usersService.findByEmail(dto.email);
+    if (!user) throw new UnauthorizedException('Invalid credentials');
 
     const isValid = await bcrypt.compare(dto.password, user.password);
-    if (!isValid) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
+    if (!isValid) throw new UnauthorizedException('Invalid credentials');
 
-    const payload = { sub: user.id, role: user.role };
+    const payload = { sub: user.id, email: user.email, role: user.role };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
       user: {
         id: user.id,
         email: user.email,

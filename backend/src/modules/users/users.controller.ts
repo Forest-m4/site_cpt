@@ -1,36 +1,35 @@
-import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  NotFoundException,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import * as usersService from './users.service';
+import { JwtUserGuard } from './interfaces/jwt-user.guard';
+import { RequestUser } from './interfaces/request-user.decorator';
+import { UserDto } from './dto/user.dto';
 
-interface JwtRequest {
-  user: {
-    sub: number;
-    role: string;
-  };
-}
-
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: usersService.UsersService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: UserDto })
+  @UseGuards(JwtUserGuard)
   @Get('me')
-  getMe(@Req() req: JwtRequest) {
-    const user = this.usersService.findById(req.user.sub);
-    return {
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    };
+  getMe(@RequestUser() user: usersService.UserEntity) {
+    return user;
   }
 
+  @ApiOkResponse({ type: UserDto })
   @Get(':id')
-  getById(@Param('id') id: string) {
-    const user = this.usersService.findById(Number(id));
-    return {
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    };
+  async getById(@Param('id', ParseIntPipe) id: number) {
+    const user = await this.usersService.findById(id);
+    if (!user) throw new NotFoundException('User not found');
+    return user;
   }
 }
