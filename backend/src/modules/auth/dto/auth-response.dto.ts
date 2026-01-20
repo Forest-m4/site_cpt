@@ -1,10 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { UserDto } from '../../users/dto/user.dto';
+import { z } from 'zod';
 
-export class AuthResponseDto {
-  @ApiProperty({ description: 'JWT access token' })
-  accessToken: string;
+export const UserSchema = z.object({
+  id: z.number(),
+  email: z.string().email(),
+  role: z.enum(['reader', 'author']),
+});
 
-  @ApiProperty({ description: 'User info', type: UserDto })
-  user: UserDto;
-}
+export type UserDtoZod = z.infer<typeof UserSchema>;
+
+export const AuthResponseSchema = z.object({
+  accessToken: z.string(),
+  user: UserSchema,
+});
+
+export type AuthResponseDto = z.infer<typeof AuthResponseSchema>;

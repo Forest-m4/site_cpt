@@ -3,8 +3,6 @@ export enum UserRoleEnum {
   AUTHOR = 'author',
 }
 
-export type UserRole = 'reader' | 'author';
-
 export interface UserEntity {
   id: number;
   email: string;
@@ -13,8 +11,3 @@ export interface UserEntity {
   createdAt?: Date;
   updatedAt?: Date;
 }
-
-export const UserRole = {
-  READER: 'reader' as const,
-  AUTHOR: 'author' as const,
-};

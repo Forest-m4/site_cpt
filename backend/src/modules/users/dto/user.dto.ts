@@ -1,12 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { z } from 'zod';
+import { UserRoleEnum } from '../entities/user.entity';
+import { createZodDto } from 'nestjs-zod/dto';
 
-export class UserDto {
-  @ApiProperty({ example: 1 })
-  id: number;
+export const UserSchema = z.object({
+  id: z.number(),
+  email: z.string().email(),
+  role: z.nativeEnum(UserRoleEnum),
+});
 
-  @ApiProperty({ example: 'user@mail.com' })
-  email: string;
-
-  @ApiProperty({ example: 'reader' })
-  role: 'reader' | 'author';
-}
+export class UserDto extends createZodDto(UserSchema) {}

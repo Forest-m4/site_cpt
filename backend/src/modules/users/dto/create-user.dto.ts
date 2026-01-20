@@ -1,13 +1,11 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { UserRole } from '../entities/user.entity';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'zod';
+import { UserRoleEnum } from '../entities/user.entity';
 
-export class CreateUserDto {
-  @ApiProperty({ example: 'user@mail.com' })
-  email: string;
+export const CreateUserSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+  role: z.nativeEnum(UserRoleEnum).optional().default(UserRoleEnum.READER),
+});
 
-  @ApiProperty({ example: 'password123' })
-  password: string;
-
-  @ApiPropertyOptional({ enum: UserRole, example: UserRole.READER })
-  role?: UserRole;
-}
+export class CreateUserDto extends createZodDto(CreateUserSchema) {}

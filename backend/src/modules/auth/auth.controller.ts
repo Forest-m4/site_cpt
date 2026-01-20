@@ -1,30 +1,26 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ZodValidationPipe } from 'nestjs-zod';
+import * as loginDto from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import { AuthResponseDto } from './dto/auth-response.dto';
 
-@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
-  @ApiOkResponse({
-    description: 'User registration',
-    type: AuthResponseDto,
-  })
-  register(@Body() dto: CreateUserDto) {
-    return this.authService.register(dto);
+  @Post('login')
+  login(
+    @Body(new ZodValidationPipe(loginDto.LoginSchema))
+    dto: loginDto.LoginDto,
+  ) {
+    return this.authService.login(dto);
   }
 
-  @Post('login')
-  @ApiOkResponse({
-    description: 'User login',
-    type: AuthResponseDto,
-  })
-  login(@Body() dto: LoginDto) {
-    return this.authService.login(dto);
+  @Post('register')
+  register(
+    @Body(new ZodValidationPipe(RegisterDto.schema))
+    dto: RegisterDto,
+  ) {
+    return this.authService.register(dto);
   }
 }

@@ -5,16 +5,15 @@ import * as bcrypt from 'bcrypt';
 import { users } from '../../lib/infrastructure/db/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { eq } from 'drizzle-orm';
+import { UserRoleEnum } from './entities/user.entity';
 
 export type UserEntity = typeof users.$inferSelect;
-
-export type UserRole = 'reader' | 'author';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectDrizzle('DB') private readonly db: NodePgDatabase) {}
 
-  async create(dto: CreateUserDto & { role?: UserRole }): Promise<UserEntity> {
+  async create(dto: CreateUserDto): Promise<UserEntity> {
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
     const [user] = await this.db
@@ -22,7 +21,7 @@ export class UsersService {
       .values({
         email: dto.email,
         password: hashedPassword,
-        role: dto.role ?? 'reader',
+        role: dto.role ?? UserRoleEnum.READER,
       })
       .returning();
 
@@ -46,10 +45,7 @@ export class UsersService {
       .where(eq(users.id, id))
       .limit(1);
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
+    if (!user) throw new NotFoundException('User not found');
     return user;
   }
 
@@ -57,9 +53,7 @@ export class UsersService {
     id: number,
     data: Partial<Omit<UserEntity, 'id'>>,
   ): Promise<UserEntity> {
-    if (data.password) {
-      data.password = await bcrypt.hash(data.password, 10);
-    }
+    if (data.password) data.password = await bcrypt.hash(data.password, 10);
 
     const [user] = await this.db
       .update(users)
@@ -67,10 +61,7 @@ export class UsersService {
       .where(eq(users.id, id))
       .returning();
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
+    if (!user) throw new NotFoundException('User not found');
     return user;
   }
 
@@ -79,20 +70,14 @@ export class UsersService {
       .delete(users)
       .where(eq(users.id, id))
       .returning();
-
-    if (!result.length) {
-      throw new NotFoundException('User not found');
-    }
+    if (!result.length) throw new NotFoundException('User not found');
   }
 
   async findAll(limit = 10, offset = 0): Promise<UserEntity[]> {
-    return await this.db.select().from(users).limit(limit).offset(offset);
+    return this.db.select().from(users).limit(limit).offset(offset);
   }
 
-  async comparePassword(
-    plainPassword: string,
-    hashedPassword: string,
-  ): Promise<boolean> {
-    return bcrypt.compare(plainPassword, hashedPassword);
+  async comparePassword(plain: string, hashed: string): Promise<boolean> {
+    return bcrypt.compare(plain, hashed);
   }
 }

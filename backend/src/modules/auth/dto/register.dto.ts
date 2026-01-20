@@ -1,5 +1,6 @@
-import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
+import { UserRoleEnum } from '../../users/entities/user.entity';
+import { createZodDto } from 'nestjs-zod';
 
 const RegisterSchema = z.object({
   email: z.string().email('Invalid email format'),
@@ -10,8 +11,7 @@ const RegisterSchema = z.object({
       /^(?=.*[A-Za-z])(?=.*\d)/,
       'Password must contain at least one letter and one number',
     ),
-  name: z.string().min(2, 'Name must be at least 2 characters').optional(),
-  role: z.enum(['USER', 'ADMIN']).optional().default('USER'),
+  role: z.nativeEnum(UserRoleEnum).optional().default(UserRoleEnum.READER),
 });
 
 export class RegisterDto extends createZodDto(RegisterSchema) {}
