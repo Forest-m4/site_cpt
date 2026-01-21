@@ -3,7 +3,7 @@ import { InjectDrizzle } from '@knaadh/nestjs-drizzle-pg';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as bcrypt from 'bcrypt';
 import { users } from '../../lib/infrastructure/db/user.schema';
-import { CreateUserDto } from './dto/create-user.dto';
+import { RegisterDto } from '../auth/dto/register.dto';
 import { eq } from 'drizzle-orm';
 import { UserRoleEnum } from './entities/user.entity';
 
@@ -13,7 +13,7 @@ export type UserEntity = typeof users.$inferSelect;
 export class UsersService {
   constructor(@InjectDrizzle('DB') private readonly db: NodePgDatabase) {}
 
-  async create(dto: CreateUserDto): Promise<UserEntity> {
+  async create(dto: RegisterDto): Promise<UserEntity> {
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
     const [user] = await this.db
