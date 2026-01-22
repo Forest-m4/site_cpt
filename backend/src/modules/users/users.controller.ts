@@ -8,7 +8,7 @@ import {
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { JwtUserGuard } from './interfaces/jwt-user.guard';
-import { RequestUser } from './interfaces/request-user.decorator';
+import { RequestUser } from './decorators/request-user.decorator';
 import { UserDto, UserSchema } from './dto/user.dto';
 import type { UserEntity } from './entities/user.entity';
 

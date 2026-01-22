@@ -6,6 +6,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { UsersService, UserEntity } from '../users.service';
 import { JwtPayload } from '../../auth/interfaces/jwt-payload.interface';
+import { RequestWithUser } from './request-with-user.interface';
 
 @Injectable()
 export class JwtUserGuard extends AuthGuard('jwt') {
@@ -19,8 +20,8 @@ export class JwtUserGuard extends AuthGuard('jwt') {
     const result = (await super.canActivate(context)) as boolean;
     if (!result) return false;
 
-    const request = context.switchToHttp().getRequest<{ user?: any }>();
-    const payload = request.user as JwtPayload;
+    const request = context.switchToHttp().getRequest<RequestWithUser>();
+    const payload = request.user as unknown as JwtPayload;
 
     if (!payload?.sub) {
       throw new UnauthorizedException('Missing user payload');
