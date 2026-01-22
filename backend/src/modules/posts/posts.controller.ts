@@ -20,7 +20,7 @@ export class PostsController {
 
   @Post()
   create(@Body() dto: CreatePostDto) {
-    return this.postsService.create(dto);
+    return this.postsService.create(dto, 1);
   }
 
   @Get()
@@ -29,17 +29,17 @@ export class PostsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne(Number(id));
+  findOne(@Param('id') id: number) {
+    return this.postsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdatePostDto) {
-    return this.postsService.update(Number(id), dto);
+  update(@Param('id') id: number, @Body() dto: UpdatePostDto) {
+    return this.postsService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postsService.remove(Number(id));
+  remove(@Param('id') id: number) {
+    return this.postsService.remove(id);
   }
 }
