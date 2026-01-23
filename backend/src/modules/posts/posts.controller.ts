@@ -7,20 +7,22 @@ import {
   Patch,
   Post,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
-
 import type { CreatePostDto } from './dto/create-post.dto';
 import type { UpdatePostDto } from './dto/update-post.dto';
 import type { PaginationDto } from './dto/pagination.dto';
+import { RequestUser } from '../users/decorators/request-user.decorator';
+import type { UserEntity } from '../users/entities/user.entity';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  create(@Body() dto: CreatePostDto) {
-    return this.postsService.create(dto, 1);
+  create(@Body() dto: CreatePostDto, @RequestUser() user: UserEntity) {
+    return this.postsService.create(dto, user.id);
   }
 
   @Get()
@@ -29,17 +31,17 @@ export class PostsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() dto: UpdatePostDto) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdatePostDto) {
     return this.postsService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.remove(id);
   }
 }

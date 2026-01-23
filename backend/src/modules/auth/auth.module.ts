@@ -14,13 +14,11 @@ import { JwtStrategy } from './jwt.strategy';
       inject: [ConfigService],
       useFactory: (config: ConfigService): JwtModuleOptions => {
         const secret = config.getOrThrow<string>('JWT_SECRET');
-        const expiresIn = config.getOrThrow<string>('JWT_EXPIRES_IN');
+        const expiresIn = config.getOrThrow<number>('JWT_EXPIRES_IN');
 
         return {
           secret,
-          signOptions: {
-            expiresIn: expiresIn as unknown as number,
-          },
+          signOptions: { expiresIn },
         };
       },
     }),
