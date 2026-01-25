@@ -6,6 +6,8 @@ import { ZodValidationPipe } from 'nestjs-zod';
 
 import * as schema from './lib/infrastructure/db/schema';
 import { PostsModule } from './modules/posts/posts.module';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -26,7 +28,9 @@ import { PostsModule } from './modules/posts/posts.module';
         };
       },
     }),
-    PostsModule, // подключаем модуль постов
+    PostsModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [

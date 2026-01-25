@@ -13,6 +13,20 @@
     "lint": "turbo run lint"
   },
   "devDependencies": {
-    "turbo": "^2.7.2"
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "^25.0.8",
+    "@types/passport-jwt": "^4.0.1",
+    "prettier": "^3.7.4",
+    "ts-node": "^10.9.2",
+    "turbo": "^2.7.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/passport": "^11.0.5",
+    "bcrypt": "^6.0.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "typeorm": "^0.3.28"
   }
 }

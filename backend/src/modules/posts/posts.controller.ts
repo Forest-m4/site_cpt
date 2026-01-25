@@ -7,61 +7,56 @@ import {
   Patch,
   Post,
   Query,
+  ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiOkResponse,
-  ApiCreatedResponse,
-  ApiNotFoundResponse,
-} from '@nestjs/swagger';
-
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PostsService } from './posts.service';
 import type { CreatePostDto } from './dto/create-post.dto';
 import type { UpdatePostDto } from './dto/update-post.dto';
 import type { PaginationDto } from './dto/pagination.dto';
-import { PostDto } from './dto/post.dto';
+import { RequestUser } from '../users/decorators/request-user.decorator';
+import type { UserEntity } from '../users/entities/user.entity';
+import { JwtUserGuard } from '../users/interfaces/jwt-user.guard';
 
-@ApiTags('Posts')
+@ApiTags('posts')
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create post' })
-  @ApiCreatedResponse({ type: PostDto })
-  create(@Body() dto: CreatePostDto) {
-    return this.postsService.create(dto);
+  @ApiBearerAuth()
+  @UseGuards(JwtUserGuard)
+  @ApiOkResponse({ description: 'Create a new post' })
+  create(@Body() dto: CreatePostDto, @RequestUser() user: UserEntity) {
+    return this.postsService.create(dto, user.id);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get posts list' })
-  @ApiOkResponse({ type: [PostDto] })
+  @ApiOkResponse({ description: 'Get all posts' })
   findAll(@Query() query: PaginationDto) {
     return this.postsService.findAll(query);
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get post by id' })
-  @ApiOkResponse({ type: PostDto })
-  @ApiNotFoundResponse({ description: 'Post not found' })
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne(Number(id));
+  @ApiOkResponse({ description: 'Get post by ID' })
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update post' })
-  @ApiOkResponse({ type: PostDto })
-  @ApiNotFoundResponse({ description: 'Post not found' })
-  update(@Param('id') id: string, @Body() dto: UpdatePostDto) {
-    return this.postsService.update(Number(id), dto);
+  @ApiBearerAuth()
+  @UseGuards(JwtUserGuard)
+  @ApiOkResponse({ description: 'Update post by ID' })
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdatePostDto) {
+    return this.postsService.update(id, dto);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete post' })
-  @ApiOkResponse({ type: PostDto })
-  @ApiNotFoundResponse({ description: 'Post not found' })
-  remove(@Param('id') id: string) {
-    return this.postsService.remove(Number(id));
+  @ApiBearerAuth()
+  @UseGuards(JwtUserGuard)
+  @ApiOkResponse({ description: 'Delete post by ID' })
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.remove(id);
   }
 }

@@ -15,8 +15,15 @@ export class PostsService {
     private readonly db: NodePgDatabase<typeof schema>,
   ) {}
 
-  async create(dto: CreatePostDto) {
-    const [post] = await this.db.insert(posts).values(dto).returning();
+  async create(dto: CreatePostDto, userId: number) {
+    const [post] = await this.db
+      .insert(posts)
+      .values({
+        title: dto.title,
+        content: dto.content,
+        userId,
+      })
+      .returning();
 
     return post;
   }
@@ -26,9 +33,7 @@ export class PostsService {
   }
 
   async findOne(id: number) {
-    const post = await this.db.query.posts.findFirst({
-      where: eq(posts.id, id),
-    });
+    const [post] = await this.db.select().from(posts).where(eq(posts.id, id));
 
     if (!post) {
       throw new NotFoundException('Post not found');
@@ -40,10 +45,7 @@ export class PostsService {
   async update(id: number, dto: UpdatePostDto) {
     const [post] = await this.db
       .update(posts)
-      .set({
-        ...dto,
-        updatedAt: new Date(),
-      })
+      .set(dto)
       .where(eq(posts.id, id))
       .returning();
 
