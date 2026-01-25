@@ -36,7 +36,7 @@ import { AuthModule } from './modules/auth/auth.module';
   providers: [
     {
       provide: APP_PIPE,
-      useClass: ZodValidationPipe,
+      useClass: ZodValidationPipe, // глобальная валидация через Zod
     },
   ],
 })

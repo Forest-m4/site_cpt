@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import * as schema from '../../lib/infrastructure/db/schema';
+import * as schema from '../../lib/infrastructure/db/schema.js';
 import { posts } from '../../lib/infrastructure/db/schema';
 
 import type { CreatePostDto } from './dto/create-post.dto';
