@@ -6,7 +6,6 @@ import {
   Param,
   UseGuards,
   ParseIntPipe,
-  Req,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -15,12 +14,17 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { ZodValidationPipe } from 'nestjs-zod';
+
 import { CommentsService } from './comments.service';
 import {
   CreateCommentDto,
   CreateCommentSchema,
+  CreateCommentData,
 } from './dto/create-comment.dto';
+
 import { JwtUserGuard } from '../users/interfaces/jwt-user.guard';
+import { RequestUser } from '../users/decorators/request-user.decorator';
+import type { UserEntity } from '../users/entities/user.entity';
 import type { CommentEntity } from './entities/comment.entity';
 
 @ApiTags('comments')
@@ -30,21 +34,20 @@ export class CommentsController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create comment for a post' })
-  @UseGuards(JwtUserGuard)
   @ApiOkResponse({ type: CreateCommentDto })
+  @UseGuards(JwtUserGuard)
   @Post(':postId')
   async createComment(
     @Param('postId', ParseIntPipe) postId: number,
     @Body(new ZodValidationPipe(CreateCommentSchema)) body: CreateCommentDto,
-    @Req() req,
+    @RequestUser() user: UserEntity,
   ): Promise<CommentEntity> {
-    return this.commentsService.create(
-      {
-        ...body,
-        postId,
-      },
-      req.user,
-    );
+    const data: CreateCommentData = {
+      ...body,
+      postId,
+    };
+
+    return this.commentsService.create(data, user);
   }
 
   @ApiOkResponse({ type: [CreateCommentDto] })

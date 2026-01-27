@@ -6,3 +6,7 @@ export const CreateCommentSchema = z.object({
 });
 
 export class CreateCommentDto extends createZodDto(CreateCommentSchema) {}
+
+export type CreateCommentData = z.infer<typeof CreateCommentSchema> & {
+  postId: number;
+};
