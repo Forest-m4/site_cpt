@@ -1,9 +1,8 @@
 import {
   Controller,
   Post,
-  Get,
-  Param,
   UseGuards,
+  Param,
   ParseIntPipe,
   Req,
 } from '@nestjs/common';
@@ -34,17 +33,5 @@ export class LikesController {
     @Req() req,
   ): Promise<{ liked: boolean }> {
     return this.likesService.toggle({ postId }, req.user);
-  }
-
-  @ApiOkResponse({
-    description: 'Number of likes',
-    schema: { example: { count: 5 } },
-  })
-  @Get('post/:postId/count')
-  async countLikes(
-    @Param('postId', ParseIntPipe) postId: number,
-  ): Promise<{ count: number }> {
-    const count = await this.likesService.count(postId);
-    return { count };
   }
 }
