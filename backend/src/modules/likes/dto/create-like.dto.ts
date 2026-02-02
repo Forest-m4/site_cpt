@@ -1,8 +1,10 @@
-import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
+import { z } from 'zod';
 
-export const CreateLikeSchema = z.object({
-  postId: z.number().describe('ID of the post to like'),
+export const LikeSchema = z.object({
+  postId: z.number().int().positive(),
 });
 
-export class CreateLikeDto extends createZodDto(CreateLikeSchema) {}
+export class LikeDto extends createZodDto(LikeSchema) {}
+
+export type LikeData = z.infer<typeof LikeSchema>;

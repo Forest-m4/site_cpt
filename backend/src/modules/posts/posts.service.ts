@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import type * as schema from '../../lib/infrastructure/db/schema.js';
+import type * as schema from '../../lib/infrastructure/db/schema';
 import { posts, likes } from '../../lib/infrastructure/db/schema';
 
 import type { CreatePostDto } from './dto/create-post.dto';
@@ -25,7 +25,10 @@ export class PostsService {
       })
       .returning();
 
-    return this.enrichPostWithLikesCount(post);
+    return {
+      ...post,
+      likesCount: 0,
+    };
   }
 
   async findAll({ take, skip }: PaginationDto) {
@@ -78,44 +81,66 @@ export class PostsService {
   }
 
   async update(id: number, dto: UpdatePostDto) {
-    const [post] = await this.db
-      .update(posts)
-      .set({
-        ...dto,
-        updatedAt: new Date(),
+    const [postWithLikes] = await this.db
+      .select({
+        id: posts.id,
+        title: posts.title,
+        content: posts.content,
+        userId: posts.userId,
+        createdAt: posts.createdAt,
+        updatedAt: posts.updatedAt,
+        likesCount: sql<number>`count(${likes.id})`.as('likesCount'),
       })
+      .from(posts)
+      .leftJoin(likes, eq(posts.id, likes.postId))
       .where(eq(posts.id, id))
-      .returning();
+      .groupBy(posts.id);
 
-    if (!post) {
+    if (!postWithLikes) {
       throw new NotFoundException('Post not found');
     }
 
-    return this.enrichPostWithLikesCount(post);
+    const updateData: any = { updatedAt: new Date() };
+    if (dto.title !== undefined) updateData.title = dto.title;
+    if (dto.content !== undefined) updateData.content = dto.content;
+
+    if (Object.keys(updateData).length > 1) {
+      await this.db.update(posts).set(updateData).where(eq(posts.id, id));
+    }
+
+    return {
+      ...postWithLikes,
+      ...dto,
+      likesCount: Number(postWithLikes.likesCount) || 0,
+      updatedAt: new Date(),
+    };
   }
 
   async remove(id: number) {
-    const [post] = await this.db
-      .delete(posts)
+    const [postWithLikes] = await this.db
+      .select({
+        id: posts.id,
+        title: posts.title,
+        content: posts.content,
+        userId: posts.userId,
+        createdAt: posts.createdAt,
+        updatedAt: posts.updatedAt,
+        likesCount: sql<number>`count(${likes.id})`.as('likesCount'),
+      })
+      .from(posts)
+      .leftJoin(likes, eq(posts.id, likes.postId))
       .where(eq(posts.id, id))
-      .returning();
+      .groupBy(posts.id);
 
-    if (!post) {
+    if (!postWithLikes) {
       throw new NotFoundException('Post not found');
     }
 
-    return this.enrichPostWithLikesCount(post);
-  }
-
-  private async enrichPostWithLikesCount(post: typeof posts.$inferSelect) {
-    const [result] = await this.db
-      .select({ count: sql<number>`count(*)` })
-      .from(likes)
-      .where(eq(likes.postId, post.id));
+    await this.db.delete(posts).where(eq(posts.id, id));
 
     return {
-      ...post,
-      likesCount: Number(result?.count) || 0,
+      ...postWithLikes,
+      likesCount: Number(postWithLikes.likesCount) || 0,
     };
   }
 }

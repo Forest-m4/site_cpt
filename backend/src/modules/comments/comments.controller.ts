@@ -15,7 +15,7 @@ import {
 } from '@nestjs/swagger';
 import { ZodValidationPipe } from 'nestjs-zod';
 
-import { CommentsService } from './comments.service';
+import { CommentsService, type CommentEntity } from './comments.service';
 import {
   CreateCommentDto,
   CreateCommentSchema,
@@ -25,7 +25,6 @@ import {
 import { JwtUserGuard } from '../users/interfaces/jwt-user.guard';
 import { RequestUser } from '../users/decorators/request-user.decorator';
 import type { UserEntity } from '../users/entities/user.entity';
-import type { CommentEntity } from './entities/comment.entity';
 
 @ApiTags('comments')
 @Controller('comments')

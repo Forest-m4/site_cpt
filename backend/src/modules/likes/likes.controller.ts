@@ -4,7 +4,7 @@ import {
   UseGuards,
   Param,
   ParseIntPipe,
-  Req,
+  Get,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -12,8 +12,11 @@ import {
   ApiOperation,
   ApiOkResponse,
 } from '@nestjs/swagger';
+
 import { LikesService } from './likes.service';
 import { JwtUserGuard } from '../users/interfaces/jwt-user.guard';
+import { RequestUser } from '../users/decorators/request-user.decorator';
+import type { UserEntity } from '../users/entities/user.entity';
 
 @ApiTags('likes')
 @Controller('likes')
@@ -30,8 +33,20 @@ export class LikesController {
   @Post(':postId')
   async toggleLike(
     @Param('postId', ParseIntPipe) postId: number,
-    @Req() req,
+    @RequestUser() user: UserEntity,
   ): Promise<{ liked: boolean }> {
-    return this.likesService.toggle({ postId }, req.user);
+    return this.likesService.toggle({ postId }, user);
+  }
+
+  @ApiOperation({ summary: 'Get likes count for a post' })
+  @ApiOkResponse({
+    schema: { example: { count: 5 } },
+  })
+  @Get(':postId/count')
+  async getLikesCount(
+    @Param('postId', ParseIntPipe) postId: number,
+  ): Promise<{ count: number }> {
+    const count = await this.likesService.count(postId);
+    return { count };
   }
 }
