@@ -7,6 +7,7 @@ import { posts, likes } from '../../lib/infrastructure/db/schema';
 import type { CreatePostDto } from './dto/create-post.dto';
 import type { UpdatePostDto } from './dto/update-post.dto';
 import type { PaginationDto } from './dto/pagination.dto';
+import { safeUpdate } from '../../lib/infrastructure/db/db.utils';
 
 @Injectable()
 export class PostsService {
@@ -81,38 +82,40 @@ export class PostsService {
   }
 
   async update(id: number, dto: UpdatePostDto) {
-    const [postWithLikes] = await this.db
-      .select({
+    const updateData = safeUpdate({
+      title: dto.title,
+      content: dto.content,
+    });
+
+    if (Object.keys(updateData).length === 0) {
+      return this.findOne(id);
+    }
+
+    const [updatedPost] = await this.db
+      .update(posts)
+      .set(updateData)
+      .where(eq(posts.id, id))
+      .returning({
         id: posts.id,
         title: posts.title,
         content: posts.content,
         userId: posts.userId,
         createdAt: posts.createdAt,
         updatedAt: posts.updatedAt,
-        likesCount: sql<number>`count(${likes.id})`.as('likesCount'),
-      })
-      .from(posts)
-      .leftJoin(likes, eq(posts.id, likes.postId))
-      .where(eq(posts.id, id))
-      .groupBy(posts.id);
+      });
 
-    if (!postWithLikes) {
+    if (!updatedPost) {
       throw new NotFoundException('Post not found');
     }
 
-    const updateData: any = { updatedAt: new Date() };
-    if (dto.title !== undefined) updateData.title = dto.title;
-    if (dto.content !== undefined) updateData.content = dto.content;
-
-    if (Object.keys(updateData).length > 1) {
-      await this.db.update(posts).set(updateData).where(eq(posts.id, id));
-    }
+    const [likesResult] = await this.db
+      .select({ count: sql<number>`count(*)` })
+      .from(likes)
+      .where(eq(likes.postId, id));
 
     return {
-      ...postWithLikes,
-      ...dto,
-      likesCount: Number(postWithLikes.likesCount) || 0,
-      updatedAt: new Date(),
+      ...updatedPost,
+      likesCount: Number(likesResult?.count) || 0,
     };
   }
 
