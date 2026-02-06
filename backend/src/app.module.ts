@@ -8,6 +8,8 @@ import * as schema from './lib/infrastructure/db/schema';
 import { PostsModule } from './modules/posts/posts.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CommentsModule } from './modules/comments/comments.module';
+import { LikesModule } from './modules/likes/likes.module';
 
 @Module({
   imports: [
@@ -31,12 +33,14 @@ import { AuthModule } from './modules/auth/auth.module';
     PostsModule,
     UsersModule,
     AuthModule,
+    CommentsModule,
+    LikesModule,
   ],
   controllers: [],
   providers: [
     {
       provide: APP_PIPE,
-      useClass: ZodValidationPipe, // глобальная валидация через Zod
+      useClass: ZodValidationPipe,
     },
   ],
 })
