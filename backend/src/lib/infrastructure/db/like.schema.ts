@@ -19,7 +19,10 @@ export const likes = pgTable(
       .notNull()
       .references(() => posts.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
   },
   (table) => [
     uniqueIndex('likes_user_post_unique').on(table.userId, table.postId),

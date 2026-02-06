@@ -9,6 +9,16 @@ import type { UpdatePostDto } from './dto/update-post.dto';
 import type { PaginationDto } from './dto/pagination.dto';
 import { safeUpdate } from '../../lib/infrastructure/db/db.utils';
 
+type PostWithLikes = {
+  id: number;
+  title: string;
+  content: string;
+  userId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  likesCount: number;
+};
+
 @Injectable()
 export class PostsService {
   constructor(
@@ -16,7 +26,7 @@ export class PostsService {
     private readonly db: NodePgDatabase<typeof schema>,
   ) {}
 
-  async create(dto: CreatePostDto, userId: number) {
+  async create(dto: CreatePostDto, userId: number): Promise<PostWithLikes> {
     const [post] = await this.db
       .insert(posts)
       .values({
@@ -32,7 +42,7 @@ export class PostsService {
     };
   }
 
-  async findAll({ take, skip }: PaginationDto) {
+  async findAll({ take, skip }: PaginationDto): Promise<PostWithLikes[]> {
     const postsWithLikes = await this.db
       .select({
         id: posts.id,
@@ -46,6 +56,7 @@ export class PostsService {
       .from(posts)
       .leftJoin(likes, eq(posts.id, likes.postId))
       .groupBy(posts.id)
+      .orderBy(posts.createdAt)
       .limit(take)
       .offset(skip);
 
@@ -55,7 +66,7 @@ export class PostsService {
     }));
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<PostWithLikes> {
     const [postWithLikes] = await this.db
       .select({
         id: posts.id,
@@ -81,7 +92,7 @@ export class PostsService {
     };
   }
 
-  async update(id: number, dto: UpdatePostDto) {
+  async update(id: number, dto: UpdatePostDto): Promise<PostWithLikes> {
     const updateData = safeUpdate({
       title: dto.title,
       content: dto.content,
@@ -119,7 +130,7 @@ export class PostsService {
     };
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<PostWithLikes> {
     const [postWithLikes] = await this.db
       .select({
         id: posts.id,
