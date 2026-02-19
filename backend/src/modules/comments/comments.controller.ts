@@ -49,8 +49,9 @@ export class CommentsController {
     return this.commentsService.create(data, user);
   }
 
-  @ApiOkResponse({ type: [CreateCommentDto] })
   @Get('post/:postId')
+  @ApiOperation({ summary: 'Get comments for a post' })
+  @ApiOkResponse({ type: [CreateCommentDto] })
   async getComments(
     @Param('postId', ParseIntPipe) postId: number,
   ): Promise<CommentEntity[]> {

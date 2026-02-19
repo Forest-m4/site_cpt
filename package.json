@@ -10,12 +10,15 @@
     "dev:backend": "turbo run dev --filter=backend",
     "dev:frontend": "turbo run dev --filter=frontend",
     "build": "turbo run build",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "generate:api": "orval",
+    "generate:api:watch": "orval --watch"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^25.0.8",
     "@types/passport-jwt": "^4.0.1",
+    "orval": "^8.2.0",
     "prettier": "^3.7.4",
     "ts-node": "^10.9.2",
     "turbo": "^2.7.2",
